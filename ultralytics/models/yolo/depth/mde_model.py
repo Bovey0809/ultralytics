@@ -1,5 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
-
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
 MDE (Monocular Depth Estimation) model for YOLO.
 
@@ -14,10 +13,10 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from ultralytics.nn.modules import C2f, Conv, Detect, SPPF
+from ultralytics.nn.modules import SPPF, C2f, Conv, Detect
 from ultralytics.nn.tasks import BaseModel
-from ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, colorstr
-from ultralytics.utils.torch_utils import fuse_conv_and_bn, initialize_weights, model_info, scale_img, time_sync
+from ultralytics.utils import LOGGER, colorstr
+from ultralytics.utils.torch_utils import fuse_conv_and_bn, model_info, scale_img, time_sync
 
 from .mde_head import Detect_MDE
 
@@ -25,27 +24,27 @@ from .mde_head import Detect_MDE
 class MDE(BaseModel):
     """
     MDE (Monocular Depth Estimation) model for YOLO.
-    
+
     This model extends YOLO to perform both object detection and depth estimation
     simultaneously. It uses the Detect_MDE head to predict bounding boxes, class
     probabilities, and depth values for each detected object.
-    
+
     Attributes:
         model (nn.Module): The complete MDE model.
         save (list): List of layer indices to save during forward pass.
         names (list): List of class names.
         nc (int): Number of classes.
-        
+
     Examples:
         Create an MDE model for KITTI dataset
-        >>> model = MDE('yolov8n.yaml', nc=5)  # 5 classes for KITTI
-        >>> model.train(data='kitti.yaml', epochs=100)
+        >>> model = MDE("yolov8n.yaml", nc=5)  # 5 classes for KITTI
+        >>> model.train(data="kitti.yaml", epochs=100)
     """
-    
+
     def __init__(self, cfg: str = "yolov8n.yaml", ch: int = 3, nc: int = None, verbose: bool = True):
         """
         Initialize MDE model.
-        
+
         Args:
             cfg (str): Path to model configuration file.
             ch (int): Number of input channels.
@@ -54,69 +53,70 @@ class MDE(BaseModel):
         """
         self.yaml_file = Path(cfg).name
         self.yaml_cfg = self._load_cfg(cfg)
-        
+
         # Override nc if provided
         if nc is not None:
-            self.yaml_cfg['nc'] = nc
-            
+            self.yaml_cfg["nc"] = nc
+
         # Initialize base model
         super().__init__(cfg, ch, nc, verbose)
-        
+
         # Replace the detection head with MDE head
         self._replace_detect_head()
-    
+
     def _load_cfg(self, cfg: str) -> dict:
         """Load model configuration from YAML file."""
         if isinstance(cfg, dict):
             return cfg
         elif isinstance(cfg, str):
             import yaml
-            with open(cfg, 'r') as f:
+
+            with open(cfg) as f:
                 return yaml.safe_load(f)
         else:
             raise ValueError(f"Invalid cfg type: {type(cfg)}")
-    
+
     def _replace_detect_head(self):
         """Replace the standard Detect head with Detect_MDE head."""
         # Find and replace Detect layers with Detect_MDE
         for i, layer in enumerate(self.model):
             if isinstance(layer, Detect):
                 # Get the number of classes and channels
-                nc = getattr(layer, 'nc', 80)
-                ch = [self.model[j].c2 for j in range(i-3, i)]  # Get channels from previous layers
-                
+                nc = getattr(layer, "nc", 80)
+                ch = [self.model[j].c2 for j in range(i - 3, i)]  # Get channels from previous layers
+
                 # Create MDE head
                 mde_head = Detect_MDE(nc=nc, ch=ch)
-                
+
                 # Replace the layer
                 self.model[i] = mde_head
                 LOGGER.info(f"Replaced Detect layer {i} with Detect_MDE head")
-    
+
     def forward(self, x: torch.Tensor, augment: bool = False, profile: bool = False) -> torch.Tensor:
         """
         Forward pass through the MDE model.
-        
+
         Args:
             x (torch.Tensor): Input tensor.
             augment (bool): Whether to use test-time augmentation.
             profile (bool): Whether to profile the forward pass.
-            
+
         Returns:
             torch.Tensor: Model predictions with depth.
         """
         if augment:
             return self._forward_augment(x)  # augmented inference, None
         return self._forward_once(x, profile)  # single-scale inference, train
-    
+
     def _forward_once(self, x: torch.Tensor, profile: bool = False, visualize: bool = False) -> torch.Tensor:
         """
         Single-scale forward pass.
-        
+
         Args:
             x (torch.Tensor): Input tensor.
             profile (bool): Whether to profile the forward pass.
             visualize (bool): Whether to visualize features.
-            
+
         Returns:
             torch.Tensor: Model predictions.
         """
@@ -131,7 +131,7 @@ class MDE(BaseModel):
             if visualize:
                 feature_visualization(x, m.type, m.i, save_dir=visualize)
         return x
-    
+
     def _forward_augment(self, x: torch.Tensor) -> torch.Tensor:
         """Augmented inference."""
         img_size = x.shape[-2:]  # height, width
@@ -145,7 +145,7 @@ class MDE(BaseModel):
             y.append(yi)
         y = self._clip_augmented(y)  # clip augmented tails
         return torch.cat(y, 1), None  # augmented inference, train
-    
+
     def _descale_pred(self, p: torch.Tensor, flips: int, scale: float, img_size: tuple) -> torch.Tensor:
         """De-scale predictions following augmented inference."""
         if self.inplace:
@@ -162,18 +162,18 @@ class MDE(BaseModel):
                 x = img_size[1] - x  # de-flip lr
             p = torch.cat((x, y, wh, p[..., 4:]), -1)
         return p
-    
+
     def _clip_augmented(self, y: list) -> torch.Tensor:
         """Clip augmented inference tails."""
         nl = self.model[-1].nl  # number of detection layers (P3-P5)
-        g = sum(4 ** x for x in range(nl))  # grid points
+        g = sum(4**x for x in range(nl))  # grid points
         e = 1  # exclude layer count
-        i = (y[0].shape[1] // g) * sum(4 ** x for x in range(e))  # indices
+        i = (y[0].shape[1] // g) * sum(4**x for x in range(e))  # indices
         y[0] = y[0][:, :-i]  # large
         i = (y[-1].shape[1] // g) * sum(4 ** (nl - 1 - x) for x in range(e))  # indices
         y[-1] = y[-1][:, i:]  # small
         return y
-    
+
     def _profile_one_layer(self, m: nn.Module, x: torch.Tensor, dt: list):
         """Profile a single layer."""
         c = m == self.model[-1]  # is final layer, copy input as inplace fix
@@ -187,7 +187,7 @@ class MDE(BaseModel):
         LOGGER.info(f"{dt[-1]:10.2f} {o:10.2f} {m.np:10.0f}  {m.type}")
         if c:
             LOGGER.info(f"{sum(dt):10.2f} {'-':>10s} {'-':>10s}  Total")
-    
+
     def fuse(self):
         """Fuse Conv2d + BatchNorm2d layers throughout the model."""
         LOGGER.info("Fusing layers... ")
@@ -198,11 +198,11 @@ class MDE(BaseModel):
                 m.forward = m.forward_fuse  # update forward
         self.info()
         return self
-    
+
     def info(self, detailed: bool = False, verbose: bool = True, imgsz: int = 640):
         """Print model information."""
         return model_info(self, detailed=detailed, verbose=verbose, imgsz=imgsz)
-    
+
     def _apply(self, fn):
         """Apply to(), cpu(), cuda(), half() to model tensors that are not parameters or registered buffers."""
         self = super()._apply(fn)
@@ -217,12 +217,12 @@ class MDE(BaseModel):
 def parse_model(d: dict, ch: list, verbose: bool = True) -> nn.Sequential:
     """
     Parse a YOLO model.yaml dictionary into a PyTorch model.
-    
+
     Args:
         d (dict): Model configuration dictionary.
         ch (list): List of input channels.
         verbose (bool): Whether to print model information.
-        
+
     Returns:
         nn.Sequential: PyTorch model.
     """
@@ -232,7 +232,7 @@ def parse_model(d: dict, ch: list, verbose: bool = True) -> nn.Sequential:
     if act:
         Conv.default_act = eval(act)  # redefine default activation, i.e. Conv.default_act = nn.SiLU()
         if verbose:
-            LOGGER.info(f"{colorstr(act+':')} activation function")
+            LOGGER.info(f"{colorstr(act + ':')} activation function")
 
     na = (len(anchors[0]) // 2) if isinstance(anchors, list) else anchors  # number of anchors
     no = na * (nc + 5)  # number of outputs = anchors * (classes + 5)

@@ -1,5 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
-
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
 NYU Depth V2 dataset.
 
@@ -8,11 +7,9 @@ This module contains the class for the NYU Depth V2 dataset.
 
 from pathlib import Path
 
-import numpy as np
 import cv2
 
 from ultralytics.data.base import BaseDataset
-from ultralytics.utils import LOGGER, colorstr
 
 
 class NYUDepthV2(BaseDataset):
@@ -31,9 +28,7 @@ class NYUDepthV2(BaseDataset):
         self.use_keypoints = use_keypoints
 
     def get_img_files(self, img_path):
-        """
-        Returns a list of image files with specified extensions.
-        """
+        """Returns a list of image files with specified extensions."""
         try:
             f = []  # image files
             for p in Path(img_path).rglob("*.jpg"):
@@ -43,9 +38,7 @@ class NYUDepthV2(BaseDataset):
             raise FileNotFoundError(f"Error loading data from {img_path}, check 'path' and 'split' in data YAML") from e
 
     def load_image(self, i, rect_mode=True):
-        """
-        Loads an image and its corresponding depth map.
-        """
+        """Loads an image and its corresponding depth map."""
         path = self.im_files[i]
         img = cv2.imread(path)  # BGR
         assert img is not None, f"Image Not Found {path}"
@@ -56,15 +49,11 @@ class NYUDepthV2(BaseDataset):
         return img, (h0, w0), img.shape[:2]
 
     def build_transforms(self, hyp=None):
-        """
-        Builds transformations for the dataset.
-        """
+        """Builds transformations for the dataset."""
         return None
 
     def get_labels(self):
-        """
-        Returns the labels for the dataset.
-        """
+        """Returns the labels for the dataset."""
         labels = []
         for path in self.im_files:
             depth_path = path.replace(".jpg", ".png")

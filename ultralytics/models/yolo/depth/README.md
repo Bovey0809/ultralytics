@@ -5,8 +5,9 @@ This module provides Monocular Depth Estimation capabilities for YOLO models, al
 ## Overview
 
 The MDE implementation extends YOLO to predict:
+
 - **Bounding boxes** for object detection
-- **Class probabilities** for classification  
+- **Class probabilities** for classification
 - **Depth values** for each detected object
 
 ## Architecture
@@ -19,11 +20,12 @@ The `Detect_MDE` class extends the standard YOLO detection head with an addition
 class Detect_MDE(nn.Module):
     def __init__(self, nc=80, ch=(), reg_max=16, beta=-14.4):
         # Box regression branch (cv2)
-        # Classification branch (cv3) 
+        # Classification branch (cv3)
         # Depth estimation branch (cv_depth)
 ```
 
 **Key Features:**
+
 - **3 prediction branches**: box regression, classification, depth estimation
 - **Log-sigmoid activation**: `fd = β * log(sigmoid(Od))` where β = -14.4
 - **Depth normalization**: Outputs normalized depth values [0, 1]
@@ -33,7 +35,7 @@ class Detect_MDE(nn.Module):
 The `MDE` class provides a complete model that integrates the MDE head with YOLO backbone:
 
 ```python
-model = MDE('yolov8n-mde.yaml', nc=5)  # 5 classes for KITTI
+model = MDE("yolov8n-mde.yaml", nc=5)  # 5 classes for KITTI
 ```
 
 ## Training
@@ -44,12 +46,13 @@ Combines detection loss with depth estimation loss:
 
 ```python
 class MDELoss(nn.Module):
-    def __init__(self, model, depth_loss_weight=1.0, depth_loss_type='l1'):
+    def __init__(self, model, depth_loss_weight=1.0, depth_loss_type="l1"):
         self.det_loss = v8DetectionLoss(model)  # Detection loss
-        self.depth_criterion = nn.L1Loss()      # Depth loss
+        self.depth_criterion = nn.L1Loss()  # Depth loss
 ```
 
 **Loss Components:**
+
 - **Detection Loss**: Standard YOLO detection loss (box + classification)
 - **Depth Loss**: L1/L2/SmoothL1 loss for depth estimation
 - **Combined Loss**: `total_loss = det_loss + weight * depth_loss`
@@ -74,6 +77,7 @@ class_id x_center y_center width height depth
 ```
 
 Where:
+
 - `class_id`: Object class (0=Car, 1=Pedestrian, etc.)
 - `x_center, y_center, width, height`: Normalized coordinates [0, 1]
 - `depth`: Normalized depth value [0, 1] (actual_depth / max_depth)
@@ -88,7 +92,7 @@ path: /path/to/kitti_yolo_depth
 train: images
 val: images
 nc: 5
-names: ['Car', 'Pedestrian', 'Cyclist', 'Van', 'Truck']
+names: ["Car", "Pedestrian", "Cyclist", "Van", "Truck"]
 depth_max: 100.0
 ```
 
@@ -100,11 +104,7 @@ depth_max: 100.0
 from ultralytics.models.yolo.depth.prepare_kitti_depth import prepare_kitti_depth_labels
 
 # Convert KITTI to YOLO format with depth
-prepare_kitti_depth_labels(
-    kitti_root="/path/to/kitti",
-    output_dir="/path/to/kitti_yolo_depth",
-    max_depth=100.0
-)
+prepare_kitti_depth_labels(kitti_root="/path/to/kitti", output_dir="/path/to/kitti_yolo_depth", max_depth=100.0)
 ```
 
 ### 2. Train Model
@@ -113,25 +113,20 @@ prepare_kitti_depth_labels(
 from ultralytics.models.yolo.depth import MDE
 
 # Create model
-model = MDE('yolov8n-mde.yaml', nc=5)
+model = MDE("yolov8n-mde.yaml", nc=5)
 
 # Train
-results = model.train(
-    data='kitti-mde.yaml',
-    epochs=100,
-    imgsz=640,
-    batch=16
-)
+results = model.train(data="kitti-mde.yaml", epochs=100, imgsz=640, batch=16)
 ```
 
 ### 3. Inference
 
 ```python
 # Load trained model
-model = MDE('kitti_mde_model.pt')
+model = MDE("kitti_mde_model.pt")
 
 # Run inference
-results = model('image.jpg')
+results = model("image.jpg")
 
 # Access predictions
 for result in results:
@@ -155,7 +150,7 @@ backbone:
 
 head:
   # YOLOv8 head layers...
-  - [[15, 18, 21], 1, Detect_MDE, [nc]]  # MDE head
+  - [[15, 18, 21], 1, Detect_MDE, [nc]] # MDE head
 ```
 
 ### Dataset Configuration
@@ -166,10 +161,10 @@ path: /path/to/dataset
 train: images
 val: images
 nc: 5
-names: ['Car', 'Pedestrian', 'Cyclist', 'Van', 'Truck']
+names: ["Car", "Pedestrian", "Cyclist", "Van", "Truck"]
 depth_max: 100.0
 depth_loss_weight: 1.0
-depth_loss_type: 'l1'
+depth_loss_type: "l1"
 ```
 
 ## Performance
@@ -210,22 +205,16 @@ ultralytics/models/yolo/depth/
 from ultralytics.models.yolo.depth import MDE
 
 # 1. Create model
-model = MDE('yolov8n-mde.yaml', nc=5)
+model = MDE("yolov8n-mde.yaml", nc=5)
 
 # 2. Train
-results = model.train(
-    data='kitti-mde.yaml',
-    epochs=100,
-    imgsz=640,
-    batch=16,
-    device='cuda'
-)
+results = model.train(data="kitti-mde.yaml", epochs=100, imgsz=640, batch=16, device="cuda")
 
 # 3. Validate
 metrics = model.val()
 
 # 4. Save
-model.save('kitti_mde_model.pt')
+model.save("kitti_mde_model.pt")
 ```
 
 ### Custom Depth Loss
@@ -237,7 +226,7 @@ from ultralytics.models.yolo.depth.train import MDELoss
 loss_fn = MDELoss(
     model=model,
     depth_loss_weight=2.0,  # Higher weight for depth
-    depth_loss_type='smooth_l1'  # Different loss type
+    depth_loss_type="smooth_l1",  # Different loss type
 )
 ```
 

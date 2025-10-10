@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
-MDE Dataset Builder for YOLO11 Training
+MDE Dataset Builder for YOLO11 Training.
 
-This script creates a proper dataset builder that extracts depth information
-from label files and includes it in the training batches.
+This script creates a proper dataset builder that extracts depth information from label files and includes it in the
+training batches.
 """
 
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import cv2
 import torch
@@ -21,11 +22,10 @@ class MDEDataset:
     """
     MDE Dataset class that extends YOLO dataset to include depth information.
 
-    This class handles loading images, labels, and depth information for
-    Monocular Depth Estimation training.
+    This class handles loading images, labels, and depth information for Monocular Depth Estimation training.
     """
 
-    def __init__(self, data_config: Dict[str, Any], mode: str = "train", batch: int = None):
+    def __init__(self, data_config: dict[str, Any], mode: str = "train", batch: int = None):
         """
         Initialize MDE Dataset.
 
@@ -66,7 +66,6 @@ class MDEDataset:
 
     def _load_dataset(self):
         """Load images, labels, and depth information from the dataset."""
-
         # Get image files
         image_files = []
         for ext in IMG_FORMATS:
@@ -88,7 +87,7 @@ class MDEDataset:
                 self.labels.append([])
                 self.depths.append([])
 
-    def _parse_label_file(self, label_path: Path) -> Tuple[List, List]:
+    def _parse_label_file(self, label_path: Path) -> tuple[list, list]:
         """
         Parse label file and extract depth information.
 
@@ -104,7 +103,7 @@ class MDEDataset:
         depths = []
 
         try:
-            with open(label_path, "r") as f:
+            with open(label_path) as f:
                 for line in f.readlines():
                     line = line.strip()
                     if line:
@@ -140,7 +139,7 @@ class MDEDataset:
         """Return dataset length."""
         return len(self.images)
 
-    def __getitem__(self, idx: int) -> Dict[str, Any]:
+    def __getitem__(self, idx: int) -> dict[str, Any]:
         """
         Get dataset item with depth information.
 
@@ -183,7 +182,7 @@ class MDEDataset:
 
         return item
 
-    def _create_depth_map(self, depths: List[float], height: int, width: int, labels: List) -> torch.Tensor:
+    def _create_depth_map(self, depths: list[float], height: int, width: int, labels: list) -> torch.Tensor:
         """
         Create a depth map from depth values and labels.
 
@@ -233,7 +232,7 @@ class MDEDataset:
         return depth_map
 
 
-def build_mde_dataset(data_config: Dict[str, Any], mode: str = "train", batch: int = None) -> MDEDataset:
+def build_mde_dataset(data_config: dict[str, Any], mode: str = "train", batch: int = None) -> MDEDataset:
     """
     Build MDE dataset with depth information.
 
@@ -275,7 +274,7 @@ class MDEDataLoader:
 
 
 def create_mde_dataloader(
-    data_config: Dict[str, Any], batch_size: int = 16, mode: str = "train", workers: int = 8
+    data_config: dict[str, Any], batch_size: int = 16, mode: str = "train", workers: int = 8
 ) -> MDEDataLoader:
     """
     Create MDE dataloader with proper collate function.
@@ -346,13 +345,12 @@ def create_mde_dataloader(
 
 def test_mde_dataset(data_yaml_path: str = "ultralytics/cfg/datasets/kitti_mde_debug.yaml"):
     """Test the MDE dataset implementation."""
-
     print("🧪 Testing MDE Dataset Implementation")
     print("=" * 50)
 
     # Load dataset config
     try:
-        with open(data_yaml_path, "r") as f:
+        with open(data_yaml_path) as f:
             data_config = yaml.safe_load(f)
         print(f"✅ Loaded dataset config: {data_yaml_path}")
     except Exception as e:

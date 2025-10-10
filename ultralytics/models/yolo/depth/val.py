@@ -1,10 +1,9 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
-
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
 MDE (Monocular Depth Estimation) validation module.
 
-This module provides validation functionality specifically for MDE models,
-handling the unique output format with depth estimation.
+This module provides validation functionality specifically for MDE models, handling the unique output format with depth
+estimation.
 """
 
 from __future__ import annotations
@@ -256,7 +255,6 @@ class MDEValidator(BaseValidator):
 
     def get_stats(self) -> dict[str, Any]:
         """Return validation statistics."""
-
         self.metrics.process(save_dir=self.save_dir, plot=self.args.plots, on_plot=self.on_plot)
         self.metrics.clear_stats()
         return self.metrics.results_dict

@@ -1986,8 +1986,8 @@ class MDEMetrics(DetMetrics):
 
     def summary(self, normalize: bool = True, decimals: int = 5) -> list[dict[str, Any]]:
         """
-        Generate a summarized representation of per-class MDE metrics as a list of dictionaries. Includes both
-        box and depth scalar metrics alongside precision, recall, and F1-score for each class.
+        Generate a summarized representation of per-class MDE metrics as a list of dictionaries. Includes both box and
+        depth scalar metrics alongside precision, recall, and F1-score for each class.
 
         Args:
             normalize (bool): For MDE metrics, everything is normalized by default [0-1].

@@ -10,9 +10,28 @@ from types import SimpleNamespace
 from typing import Any
 
 from ultralytics import __version__
-from ultralytics.utils import (ASSETS, DEFAULT_CFG, DEFAULT_CFG_DICT, DEFAULT_CFG_PATH, FLOAT_OR_INT, IS_VSCODE, LOGGER,
-                               RANK, ROOT, RUNS_DIR, SETTINGS, SETTINGS_FILE, STR_OR_PATH, TESTS_RUNNING, YAML,
-                               IterableSimpleNamespace, checks, colorstr, deprecation_warn, vscode_msg)
+from ultralytics.utils import (
+    ASSETS,
+    DEFAULT_CFG,
+    DEFAULT_CFG_DICT,
+    DEFAULT_CFG_PATH,
+    FLOAT_OR_INT,
+    IS_VSCODE,
+    LOGGER,
+    RANK,
+    ROOT,
+    RUNS_DIR,
+    SETTINGS,
+    SETTINGS_FILE,
+    STR_OR_PATH,
+    TESTS_RUNNING,
+    YAML,
+    IterableSimpleNamespace,
+    checks,
+    colorstr,
+    deprecation_warn,
+    vscode_msg,
+)
 
 # Define valid solutions
 SOLUTION_MAP = {

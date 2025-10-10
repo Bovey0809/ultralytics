@@ -1,3 +1,5 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 # KITTI Dataset Configuration for Monocular Depth Estimation
 # Dataset path
 path: /root/autodl-tmp/kitti_yolo_depth

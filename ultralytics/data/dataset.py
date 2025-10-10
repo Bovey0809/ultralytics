@@ -139,7 +139,7 @@ class YOLODataset(BaseDataset):
                         # Standard format: class, x_center, y_center, width, height
                         bboxes = lb[:, 1:]  # n, 4
                         depths = None
-                    
+
                     label_dict = {
                         "im_file": im_file,
                         "shape": shape,
@@ -150,11 +150,11 @@ class YOLODataset(BaseDataset):
                         "normalized": True,
                         "bbox_format": "xywh",
                     }
-                    
+
                     # Add depth information if available
                     if depths is not None:
                         label_dict["depths"] = depths
-                    
+
                     x["labels"].append(label_dict)
                 if msg:
                     msgs.append(msg)

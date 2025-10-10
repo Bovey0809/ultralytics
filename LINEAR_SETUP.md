@@ -13,7 +13,7 @@ This guide explains how to fetch Linear issues related to depth estimation in th
 ### 2. Set Up Environment Variable
 
 ```bash
-export LINEAR_API_KEY='lin_api_...'  # Replace with your actual key
+export LINEAR_API_KEY='lin_api_...' # Replace with your actual key
 ```
 
 ### 3. Run the Script
@@ -30,6 +30,7 @@ python3 show_linear_issues.py "monocular depth"
 ## Output
 
 The script will display:
+
 - Issue ID and identifier
 - Title and description
 - Current state (open, closed, etc.)
@@ -70,6 +71,7 @@ Add monocular depth estimation capabilities to YOLOv8 model...
 If you see: `Error: LINEAR_API_KEY environment variable not set`
 
 Solution:
+
 ```bash
 export LINEAR_API_KEY='your-api-key'
 ```
@@ -77,6 +79,7 @@ export LINEAR_API_KEY='your-api-key'
 ### No Issues Found
 
 The script automatically tries alternative search terms:
+
 - "depth"
 - "MDE"
 - "monocular depth"
@@ -85,6 +88,7 @@ The script automatically tries alternative search terms:
 ### Authentication Error
 
 If you get authentication errors:
+
 1. Verify your API key is correct
 2. Check that your Linear account has access to the workspace
 3. Ensure the API key hasn't been revoked
@@ -96,8 +100,8 @@ If you get authentication errors:
 ```bash
 # Create a shell script to search multiple terms
 for term in "depth estimation" "MDE" "monocular" "KITTI"; do
-    echo "=== Searching: $term ==="
-    python3 show_linear_issues.py "$term"
+  echo "=== Searching: $term ==="
+  python3 show_linear_issues.py "$term"
 done
 ```
 

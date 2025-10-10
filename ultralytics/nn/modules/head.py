@@ -1321,8 +1321,7 @@ class Detect_MDE(Detect):
 
     def depth_activation(self, x: torch.Tensor) -> torch.Tensor:
         """
-        Log-sigmoid activation for depth (Equation 3 from paper)
-        fd = β * log(sigmoid(Od)) where β = -14.4
+        Log-sigmoid activation for depth (Equation 3 from paper) fd = β * log(sigmoid(Od)) where β = -14.4.
 
         Args:
             x (torch.Tensor): Raw depth predictions.

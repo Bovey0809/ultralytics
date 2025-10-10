@@ -1,3 +1,5 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 # Minimal pre-commit configuration for Ultralytics YOLO 🚀
 # This is a lightweight version with only essential hooks
 
@@ -18,18 +20,18 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
-        args: ['--line-length=120', '--profile=black', '--multi-line=3']
+        args: ["--line-length=120", "--profile=black", "--multi-line=3"]
 
   # Python formatting with Black - runs after isort
   - repo: https://github.com/psf/black
     rev: 24.1.1
     hooks:
       - id: black
-        args: ['--line-length=120', '--target-version=py38']
+        args: ["--line-length=120", "--target-version=py38"]
 
   # Fast Python linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.8
     hooks:
       - id: ruff
-        args: ['--line-length=120', '--fix']
+        args: ["--line-length=120", "--fix"]

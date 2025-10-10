@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
-YOLO11 MDE (Monocular Depth Estimation) Training Script
+YOLO11 MDE (Monocular Depth Estimation) Training Script.
 
 This script demonstrates how to train a YOLO11 model with depth estimation
 on the KITTI dataset.
@@ -17,7 +18,6 @@ from ultralytics.utils.metrics import MDEMetrics
 
 def train_yolo_mde():
     """Train YOLO11 MDE model on KITTI dataset."""
-
     # Simple 2-line training as requested
     model = YOLO("yolo11-mde.yaml", task="mde")
     results = model.train(epochs=10)
@@ -27,7 +27,6 @@ def train_yolo_mde():
 
 def validate_model(model_path=None):
     """Validate the trained MDE model."""
-
     if model_path is None:
         model_path = "runs/mde/train13/weights/best.pt"
 
@@ -149,14 +148,13 @@ def predict_with_depth(model, image_path):
                 cls = boxes.cls[i]
                 conf = boxes.conf[i]
 
-                print(f"Class: {model.names[int(cls)]}, " f"Confidence: {conf:.2f}, " f"Depth: {depth:.2f}m")
+                print(f"Class: {model.names[int(cls)]}, Confidence: {conf:.2f}, Depth: {depth:.2f}m")
 
     return results
 
 
 def predict_with_mde(model_path=None, source=None):
     """Run inference with the trained MDE model."""
-
     if model_path is None:
         model_path = "yolo11_mde/kitti_depth/weights/best.pt"
 

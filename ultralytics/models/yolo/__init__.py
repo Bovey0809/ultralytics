@@ -1,6 +1,6 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-from ultralytics.models.yolo import classify, detect, depth, obb, pose, segment, world, yoloe
+from ultralytics.models.yolo import classify, depth, detect, obb, pose, segment, world, yoloe
 
 from .model import YOLO, YOLOE, YOLOWorld
 
