@@ -1,0 +1,191 @@
+{
+  "scan_metadata": {
+    "scan_date": "2025-10-10",
+    "scan_period": "Last 14 days (2025-09-26 to 2025-10-10)",
+    "repository": "ultralytics/ultralytics",
+    "default_branch": "main",
+    "limitations": [
+      "GitHub API authentication unavailable - unable to query PRs directly",
+      "No direct YOLO-155 to YOLO-164 issue references found in commits",
+      "Analysis based on git log, branch inspection, and keyword searches"
+    ]
+  },
+  "depth_estimation_activity": {
+    "summary": "Significant depth estimation work found in 'origin/depth_estimation' branch (last updated 2025-09-25, 15 days ago - just outside the 14-day window)",
+    "branch": "origin/depth_estimation",
+    "last_commit_date": "2025-09-25",
+    "last_commit_hash": "7f95cabd7878a9a0ba1a4412545d5e69b67a3780",
+    "key_commits": [
+      {
+        "hash": "bd745e705441605c2af0d0fc52dd9879472b7c9a",
+        "date": "2025-09-25",
+        "message": "Reconstruct the depth estimation module, remove unnecessary MDE loss classes, update the MDE trainer to inherit from DetectionTrainer, and optimize the detection head to support depth output."
+      },
+      {
+        "hash": "81d43537bfdaecfb77b486e423d57fd747243942",
+        "date": "2025-09-23",
+        "message": "Add depth estimation training improvements and dataset building"
+      },
+      {
+        "hash": "b8639a8169b064499c2d2746e1a0c88e01c9a125",
+        "date": "2025-09-23",
+        "message": "Add metrics for depth estimation in val log"
+      },
+      {
+        "hash": "74a6f716dfd13cc42ebea81202253129badc39d4",
+        "date": "2025-09-20",
+        "message": "feat(MDE): Implement complete MDE training system with simplified interface"
+      },
+      {
+        "hash": "0bd1f9c2cd7f7950df46df7dc2a92bc5020bcce2",
+        "date": "2025-09-20",
+        "message": "feat(MDE): Add MDE-specific validator for depth estimation models"
+      },
+      {
+        "hash": "4fa3b44e55850fc2bf7d332378131a72b0d5671b",
+        "date": "2025-09-20",
+        "message": "feat(MDE): Major improvements to YOLO11 MDE training - Fix label validation to handle 6-column depth labels"
+      },
+      {
+        "hash": "a11dcb33b9cb463f1f62b0c9ba28cbea72a5a923",
+        "date": "2025-09-20",
+        "message": "[WIP] feat(MDE): Implement Monocular Depth Estimation for YOLO11"
+      },
+      {
+        "hash": "8126208a8ae3571139d5fb61139098db9ed99d8a",
+        "date": "Unknown",
+        "message": "Add NYU Depth V2 dataset support and configuration"
+      }
+    ],
+    "keywords_found": [
+      "MDE (Monocular Depth Estimation)",
+      "depth loss",
+      "depth estimation",
+      "NYU Depth V2 dataset",
+      "KITTI depth dataset",
+      "Detect_MDE head",
+      "MDETrainer",
+      "MDEValidator",
+      "depth_loss_weight",
+      "depth metrics"
+    ],
+    "files_modified": [
+      "ultralytics/models/yolo/depth/train.py",
+      "ultralytics/models/yolo/depth/val.py",
+      "ultralytics/models/yolo/depth/mde_head.py",
+      "ultralytics/models/yolo/depth/mde_model.py",
+      "ultralytics/models/yolo/depth/nyu.py",
+      "ultralytics/models/yolo/depth/README.md",
+      "ultralytics/cfg/datasets/kitti_mde.yaml",
+      "ultralytics/cfg/datasets/nyu.yaml",
+      "ultralytics/cfg/models/11/yolo11-mde.yaml",
+      "ultralytics/nn/modules/head.py",
+      "ultralytics/utils/loss.py",
+      "build_mde_dataset.py",
+      "test_mde_integration.py"
+    ]
+  },
+  "linear_integration_activity": {
+    "summary": "Script added to fetch Linear depth estimation issues (within 14-day window)",
+    "branch": "origin/cursor/show-linear-depth-estimation-issues-c6fd",
+    "commit": {
+      "hash": "65724b3613ca2a35bd6d7ef2a375725e807a9a21",
+      "date": "2025-10-10",
+      "message": "feat: Add script to fetch Linear depth estimation issues"
+    },
+    "files_added": [
+      "show_linear_issues.py",
+      "LINEAR_SETUP.md",
+      ".env.example"
+    ]
+  },
+  "issue_status": [
+    {
+      "issue": "YOLO-155",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-155 found in commits from last 14 days",
+        "Extensive depth estimation work exists in 'origin/depth_estimation' branch (2025-09-20 to 2025-09-25) but no explicit issue reference",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-156",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-156 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-157",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-157 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-158",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-158 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-159",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-159 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-160",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-160 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-161",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-161 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-162",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-162 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-163",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-163 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    },
+    {
+      "issue": "YOLO-164",
+      "suggestedState": "Unchanged",
+      "evidence": [
+        "No direct references to YOLO-164 found in commits from last 14 days",
+        "Unable to verify PR status - GitHub API authentication unavailable"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Verify if 'origin/depth_estimation' branch has an associated PR that references YOLO issues",
+    "Check Linear project directly to see if commits bd745e70, 81d43537, b8639a81, 74a6f716, etc. are linked to any YOLO-155 to YOLO-164 issues",
+    "If depth_estimation work relates to specific YOLO issues, ensure commits include 'Fixes YOLO-###' or 'Closes YOLO-###' references",
+    "Consider setting up GitHub API authentication for more comprehensive PR and issue tracking"
+  ]
+}
